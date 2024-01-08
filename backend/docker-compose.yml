@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  #build e inicialização do app
+  kotlinapp:
+    container_name: kotlinapp
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DB_URL: ${DB_URL}
+        PG_USER: ${PG_USER}
+        PG_PASSWORD: ${PG_PASSWORD}
+    ports: #porta para conexão com a api
+      - "8080:8080"
+    environment: #variaveis de ambiente
+      DB_URL: jdbc:postgresql://db:5432/postgres
+      PG_USER: postgres
+      PG_PASSWORD: postgres
+    depends_on: #criação de dependencia
+      - db
+  db:
+    container_name: db
+    image: postgres:12
+    environment: #variaveis de ambiente
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports: #porta utilizada para conexão
+      - "5432:5432"
+    volumes: #volume usado para salvar os dados
+      - pgdata:/var/lib/postgresql/data
+
+volumes: #criação de volumes
+  pgdata: {}
