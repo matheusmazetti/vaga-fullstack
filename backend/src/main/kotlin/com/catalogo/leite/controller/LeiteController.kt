@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api")
 class LeiteController(@Autowired val leiteRepo: LeiteRepository) {
-
+    @CrossOrigin(origins = ["http://localhost:3000"])
     //Função para enviar todos os itens da tabela
     @GetMapping("/getall")
     fun getAllLeites() : List<leite>?{
