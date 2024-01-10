@@ -7,6 +7,7 @@ import Table from "../components/table";
 
 export default function MainPage() {
 	const [searchInput, setSearchInput] = React.useState("");
+    const [results, setResults] = React.useState([]);
 
 	function sendSearch() {
 		let stringCheck = searchInput.replace(/\s/g, '');
@@ -14,7 +15,7 @@ export default function MainPage() {
 			//Envia um request getall
 			const allRequest = axios.get("http://localhost:8080/api/getall");
 			allRequest.then((response) => {
-				console.log(response);
+				setResults(response.data);
 			})
 		} else {
 			//Envia um request get
@@ -33,10 +34,10 @@ export default function MainPage() {
 					<div>
 						<input type="text" onChange={(e) => { setSearchInput(e.target.value) }} />
 						<IconContext.Provider value={{ color: "white", size: "20px" }}>
-							<button onClick={() => { sendSearch() }}><FaMagnifyingGlass /></button>
+							<button className="button" onClick={() => { sendSearch() }}><FaMagnifyingGlass /></button>
 						</IconContext.Provider>
 					</div>
-					<Table />
+					<Table data={results} rowsPerPage={10}/>
 				</SearchDiv>
 			</PageDiv>
 		</>
@@ -57,6 +58,7 @@ const SearchDiv = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    width: 60vw;
 
     p{
         margin: 0;
@@ -81,7 +83,7 @@ const SearchDiv = styled.div`
             border-radius: 10px 0 0 10px;
         }
 
-        button{
+        .button{
             height: 43px;
             width: 40px;
             border: 1px solid #074ee8;

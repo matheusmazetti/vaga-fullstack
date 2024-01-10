@@ -25,11 +25,11 @@ const useTable = (data, page, rowsPerPage) => {
   React.useEffect(()=>{
     //Atualizando a paginação
     const range = calculateRange(data, rowsPerPage);
-    setTableRange([...range])
+    setTableRange(range)
 
     //Atualizando a separação de dados
     const slice = sliceData(data, page, rowsPerPage);
-    setSlice([...slice]);
+    setSlice(slice);
 
   },[data, setTableRange, page, setSlice]);
 

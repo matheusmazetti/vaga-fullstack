@@ -15,12 +15,14 @@ export default function Pagination({ range, setPage, page, slice }) {
     //o array range é percorrido para criar os botões de paginação
     <PaginationGroup>
       {range.map((element, index) => {
-        <button
+        return (
+          <button
           key={index}
           className={`${page === element ? 'activeButton' : 'inactiveButton'}`}
           onClick={() => {setPage(element)}}>
             {element}
           </button>
+        )
       })}
     </PaginationGroup>
   )
@@ -30,21 +32,19 @@ export default function Pagination({ range, setPage, page, slice }) {
 const PaginationGroup = styled.div`
   background-color: #f1f1f1;
   padding: 8px 0px;
-  width: 100%;
   font-weight: 500;
   text-align: left;
   font-size: 16px;
   color: #2c3e50;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
   display: flex;
   align-items: center;
-  justify-content: center;
-
-  .button {
+  justify-content: space-between;
+  width: 100%;
+  button {
     border: none;
     padding: 7px 14px;
     border-radius: 10px;
+    margin: 4px;
     cursor: pointer;
     margin-right: 4px;
     margin-left: 4px;

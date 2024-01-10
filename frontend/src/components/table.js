@@ -2,9 +2,11 @@ import styled from "styled-components";
 import React from "react";
 import Pagination from "./pagination";
 import { FaRegTrashAlt } from "react-icons/fa";
+import useTable from "../hooks/useTable";
 
 export default function Table({ data, rowsPerPage }) {
-	const [page, setPage] = useState(1);
+	console.log(data);
+	const [page, setPage] = React.useState(1);
   const { slice, range } = useTable(data, page, rowsPerPage);
 	
 	//Percorre o slice (dados paginados) para colocar na tabela
@@ -20,11 +22,13 @@ export default function Table({ data, rowsPerPage }) {
 				</thead>
 				<tbody>
 					{slice.map((element) => {
-						<tr>
-							<td>{element.ean}</td>
-							<td>{element.name}</td>
-							<td><FaRegTrashAlt /></td>
-						</tr>
+						return (
+							<tr key={element.id}>
+								<td>{element.ean}</td>
+								<td>{element.name}</td>
+								<td><FaRegTrashAlt /></td>
+							</tr>
+						)
 					})}
 				</tbody>
 			</CustomTable>
@@ -38,6 +42,7 @@ const CustomTable = styled.table`
 	border-collapse: collapse;
   border: none;
   width: 100%;
+	margin-top: 20px;
 
 	thead{
 		background-color: transparent;

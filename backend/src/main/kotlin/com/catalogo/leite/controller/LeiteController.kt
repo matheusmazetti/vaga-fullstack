@@ -2,7 +2,7 @@ package com.catalogo.leite.controller
 
 import com.catalogo.leite.models.leite
 import com.catalogo.leite.repository.LeiteRepository
-import jakarta.websocket.server.PathParam
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
@@ -22,7 +22,7 @@ class LeiteController(@Autowired val leiteRepo: LeiteRepository) {
 
     //Função para criar um novo registro na tabela
     @PostMapping("/create")
-    fun createLeite(@RequestBody leite: leite) : ResponseEntity<leite> {
+    fun createLeite(@Valid @RequestBody leite: leite) : ResponseEntity<leite> {
         //Salva o novo item na tabela
         val newLeite = leiteRepo.save(leite)
         //Retorna o novo item criado e o status de item criado
@@ -48,7 +48,7 @@ class LeiteController(@Autowired val leiteRepo: LeiteRepository) {
 
     //Função para atualizar item na tabela
     @PostMapping("/update/{id}")
-    fun updateLeite(@PathVariable("id") id: Long, @RequestBody newLeite: leite) : ResponseEntity<leite> {
+    fun updateLeite(@PathVariable("id") id: Long, @Valid @RequestBody newLeite: leite) : ResponseEntity<leite> {
         //Checa a existencia do item na tabela, caso não exista retorna status de não encontrado
         val oldLeite = leiteRepo.findByIdOrNull(id)?: return ResponseEntity(HttpStatus.NOT_FOUND)
 
