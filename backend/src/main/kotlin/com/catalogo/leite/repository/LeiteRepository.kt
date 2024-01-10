@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository
 @Repository
 interface LeiteRepository : JpaRepository<leite, Long> {
 
+    fun existsByEan(ean: String) : Boolean
+
     @Query("SELECT l FROM leite l WHERE l.name LIKE %:query% OR l.ean LIKE %:query%")
     fun getSearchResults(@Param("query") query: String) : List<leite>
 }

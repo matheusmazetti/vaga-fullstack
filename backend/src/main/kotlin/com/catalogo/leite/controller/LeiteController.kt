@@ -21,8 +21,15 @@ class LeiteController(@Autowired val leiteRepo: LeiteRepository) {
     }
 
     //Função para criar um novo registro na tabela
+    @CrossOrigin(origins = ["http://localhost:3000"])
     @PostMapping("/create")
     fun createLeite(@Valid @RequestBody leite: leite) : ResponseEntity<leite> {
+
+        //Verifica se o ean não foi utilizado anteriormente
+        if(leiteRepo.existsByEan(leite.ean)){
+            return ResponseEntity(HttpStatus.CONFLICT);
+        }
+
         //Salva o novo item na tabela
         val newLeite = leiteRepo.save(leite)
         //Retorna o novo item criado e o status de item criado
@@ -30,6 +37,7 @@ class LeiteController(@Autowired val leiteRepo: LeiteRepository) {
     }
 
     //Função para deletar um item da tabela
+    @CrossOrigin(origins = ["http://localhost:3000"])
     @PostMapping("/delete/{id}")
     fun deleteLeite(@PathVariable("id") id: Long) : ResponseEntity<HttpStatus> {
 
@@ -47,6 +55,7 @@ class LeiteController(@Autowired val leiteRepo: LeiteRepository) {
     }
 
     //Função para atualizar item na tabela
+    @CrossOrigin(origins = ["http://localhost:3000"])
     @PostMapping("/update/{id}")
     fun updateLeite(@PathVariable("id") id: Long, @Valid @RequestBody newLeite: leite) : ResponseEntity<leite> {
         //Checa a existencia do item na tabela, caso não exista retorna status de não encontrado
@@ -61,6 +70,7 @@ class LeiteController(@Autowired val leiteRepo: LeiteRepository) {
     }
 
     //Função para pesquisar itens
+    @CrossOrigin(origins = ["http://localhost:3000"])
     @GetMapping("/get")
     fun getItems(@RequestParam("query") query: String) : List<leite>? {
         val items = leiteRepo.getSearchResults(query)
