@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components";
+import { PaginationGroup } from "../styles/ComponentsStyles";
 
 //Função responsável pela criação dos botões de paginação da tabela
 export default function Pagination({ range, setPage, page, slice }) {
@@ -28,35 +28,3 @@ export default function Pagination({ range, setPage, page, slice }) {
   )
 
 }
-
-const PaginationGroup = styled.div`
-  background-color: #f1f1f1;
-  padding: 8px 0px;
-  font-weight: 500;
-  text-align: left;
-  font-size: 16px;
-  color: #2c3e50;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  button {
-    border: none;
-    padding: 7px 14px;
-    border-radius: 10px;
-    margin: 4px;
-    cursor: pointer;
-    margin-right: 4px;
-    margin-left: 4px;
-  }
-
-  .activeButton {
-    color: white;
-    background: #185adb;
-  }
-
-  .inactiveButton {
-    color: #2c3e50;
-    background: #f9f9f9;
-  }
-`

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import Header from "../components/header"
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IconContext } from "react-icons";
 import React from "react";
@@ -7,12 +7,15 @@ import Table from "../components/table";
 import ReactLoading from 'react-loading';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { PageDiv, SearchDiv, LoadingDiv, AddDiv } from "../styles/MainPageStyle";
 
 export default function MainPage() {
 	const [searchInput, setSearchInput] = React.useState("");
 	const [results, setResults] = React.useState([]);
 	const [showTable, setShowTable] = React.useState(false);
 	const [showLoading, setShowLoading] = React.useState(false);
+	const [name, setName] = React.useState("");
+	const [ean, setEan] = React.useState("");
 
 	function sendSearch() {
 		setShowTable(false);
@@ -65,8 +68,95 @@ export default function MainPage() {
 		}
 	}
 
+	function addItem() {
+		let checkName = name.replace(/\s/g, '');
+		if(checkName.length === 0){
+			toast.error('Preencha corretamente o nome do produto', {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "colored",
+			});
+			return
+		}
+
+		let checkEan = ean.replace(/\s/g, '');
+		if(checkEan.length === 0) {
+			toast.error('Preencha corretamente o EAN do produto', {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "colored",
+			});
+			return
+		}
+
+		let addData = {
+			name: name,
+			ean: ean
+		}
+
+		const addReq = axios.post("http://localhost:8080/api/create", addData)
+
+		addReq.then((response) => {
+			setEan("");
+			setName("");
+			sendSearch();
+			toast.success('Item adicionado com sucesso', {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "colored",
+				});
+		})
+
+		addReq.catch((error) => {
+			console.log(error);
+			if(error.response.status === 409) {
+				toast.error('EAN já cadastrado', {
+					position: "top-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+			} else {
+				toast.error('Erro ao adicionar o produto', {
+					position: "top-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+			}
+			sendSearch();
+		})
+
+
+
+	}
+
 	return (
 		<>
+			<Header />
 			<PageDiv>
 				<SearchDiv>
 					<p>Digite os dados da busca</p>
@@ -76,15 +166,15 @@ export default function MainPage() {
 							<button className="button" onClick={() => { sendSearch() }}><FaMagnifyingGlass /></button>
 						</IconContext.Provider>
 					</div>
-					{(showTable ? <Table data={results} rowsPerPage={10} setShowLoading={setShowLoading} setShowTable={setShowTable} sendSearch={sendSearch} /> : (showLoading ? <LoadingDiv><ReactLoading type="spin" width={150} color="#074ee8" /></LoadingDiv> : <></>))}
+					{(showTable ? <Table data={results} rowsPerPage={10} setShowLoading={setShowLoading} setShowTable={setShowTable} sendSearch={sendSearch} /> : (showLoading ? <LoadingDiv><ReactLoading type="spin" width={150} color="#074ee8" className="margintop" /></LoadingDiv> : <></>))}
 				</SearchDiv>
 				<AddDiv>
 					<p>Adicione novos produtos</p>
 					<label for="name">Nome:</label>
-					<input id="name" type="text" />
+					<input id="name" type="text" onChange={(e) => {setName(e.target.value)}} value={name} />
 					<label for="ean">EAN:</label>
-					<input id="ean" type="text" />
-					<button className="addButton">Adicionar</button>
+					<input id="ean" type="text" onChange={(e) => {setEan(e.target.value)}} value={ean} />
+					<button className="addButton" onClick={() => {addItem()}} >Adicionar</button>
 				</AddDiv>
 				<ToastContainer />
 			</PageDiv>
@@ -93,112 +183,4 @@ export default function MainPage() {
 	);
 }
 
-const AddDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    p{
-        margin: 0;
-        margin-bottom: 10px;
-        color: grey;
-        font-size: larger;
-        font-weight: 700;
-    }
 
-		label{
-			text-align: left;
-			font-weight: 700;
-			color: grey;
-			width: 400px;
-		}
-
-    input[type=text]{
-			margin-top: 10px;
-			margin-bottom: 10px;
-      width: 400px;
-      height: 40px;
-      font-size: large;
-      border: 1.5px solid gray;
-      padding: 0;
-      border-radius: 10px;
-    }
-
-    .addButton{
-      height: 43px;
-      width: 150px;
-      border: 1px solid #074ee8;
-      border-radius: 10px;
-      background-color: #074ee8;
-      padding: 0;
-      color: white;
-    }
-
-    button:hover{
-      cursor: pointer;
-    }
-`;
-
-const PageDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 120px;
-`;
-
-const SearchDiv = styled.div`
-    margin-left: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: 70vw;
-		height: 70vh;
-
-    p{
-        margin: 0;
-        margin-bottom: 10px;
-        color: grey;
-        font-size: large;
-        font-weight: 700;
-    }
-
-    div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-
-        input[type=text]{
-            width: 380px;
-            height: 21px;
-            font-size: large;
-            border: 1.5px solid gray;
-            padding: 10px;
-            border-radius: 10px 0 0 10px;
-        }
-
-        .button{
-            height: 43px;
-            width: 40px;
-            border: 1px solid #074ee8;
-            border-radius: 0 10px 10px 0;
-            background-color: #074ee8;
-            padding: 0;
-            color: white;
-            position: absolute;
-            right: -15px;
-        }
-
-        button:hover{
-            cursor: pointer;
-        }
-
-    }
-
-`;
-
-const LoadingDiv = styled.div`
-	width: 100%;
-	height: 100%;
-`;

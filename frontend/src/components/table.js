@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import React from "react";
 import Pagination from "./pagination";
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -6,6 +5,7 @@ import useTable from "../hooks/useTable";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CustomTable } from "../styles/ComponentsStyles";
 
 
 export default function Table({ data, rowsPerPage, setShowLoading, setShowTable, sendSearch }) {
@@ -72,36 +72,3 @@ export default function Table({ data, rowsPerPage, setShowLoading, setShowTable,
 		</>	
 	);
 }
-
-
-const CustomTable = styled.table`
-	border-collapse: collapse;
-  border: none;
-  width: 100%;
-	height: 100%;
-	margin-top: 20px;
-
-	thead{
-		background-color: transparent;
-  	transition: all 0.25s ease;
-  	border-radius: 10px;
-	}
-
-	th{
-		background-color: #f1f1f1;
-		padding: 12px;
-		font-weight: 500;
-		text-align: left;
-		font-size: 14px;
-		color: #2c3e50;
-	}
-
-	td{
-		padding: 12px;
-  	font-size: 14px;
-  	color: grey;
-	}
-
-`
-
-

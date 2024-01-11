@@ -1,4 +1,4 @@
-import Header from "./components/header";
+import LoginPage from "./pages/loginPage";
 import MainPage from "./pages/mainPage";
 
 import {
@@ -6,14 +6,16 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
+import SignupPage from "./pages/singupPage";
 
 function App() {
   return (
     <>
       <Router>
-        <Header />
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/results" element={<MainPage />} />
         </Routes>
       </Router>
     </>
