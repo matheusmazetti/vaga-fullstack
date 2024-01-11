@@ -1,11 +1,11 @@
 version: '3.9'
 
 services:
-  #build e inicialização do app
+  #build e inicialização do app backend
   kotlinapp:
     container_name: kotlinapp
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
       args:
         DB_URL: ${DB_URL}
@@ -30,6 +30,15 @@ services:
       - "5432:5432"
     volumes: #volume usado para salvar os dados
       - pgdata:/var/lib/postgresql/data
+  client:
+    container_name: client
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - kotlinapp
 
 volumes: #criação de volumes
   pgdata: {}
