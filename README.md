@@ -62,10 +62,11 @@ Para a implementação do sistema, crie um fork desse repositório e adicione to
 Além do funcionamento do sistema, será avaliada a organização do código, comentários e a identidade visual do sistema.
 
 
-## Instruções para construção (build) e execução (run) do frontend
+## Instruções para construção (build) e execução (run) do projeto
 
-<preencha as instruções nesse tópico>
-
-## Instruções para construção (build) e execução (run) do backend
-
-<preencha as instruções nesse tópico>
+1. Iniciar o Docker
+2. Abrir a pasta do repositório em um console
+3. Executar o comando `docker compose build`
+4. Executar o comando `docker compose up -d`
+5. A aplicação estará disponível no endereço `http://localhost:3000`
+6. A API pode ser acessada no endereço `http://localhost:8080/api`
